@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Repaso · Z-score, P-value e Hipótesis Nula — GF-0624</title>
+<style>
+  :root {
+    --primary: #1C7293;
+    --primary-dark: #065A82;
+    --accent: #21295C;
+    --warm: #B85042;
+    --soft: #F4F7F8;
+    --border: #D9E2E5;
+    --text: #1F2A30;
+    --text-muted: #5A6C75;
+    --highlight: #FFF6E0;
+    --green: #2C5F2D;
+    --green-light: #E8F0E2;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.65;
+    color: var(--text);
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 30px 25px 60px;
+    background: #FFFFFF;
+  }
+
+  /* ENCABEZADO */
+  header.doc-header {
+    border-bottom: 4px solid var(--primary);
+    padding-bottom: 20px;
+    margin-bottom: 35px;
+  }
+  header.doc-header .course {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.85em;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--primary);
+    font-weight: bold;
+    margin: 0 0 8px 0;
+  }
+  header.doc-header h1 {
+    font-size: 2em;
+    color: var(--accent);
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+  }
+  header.doc-header .subtitle {
+    font-style: italic;
+    color: var(--text-muted);
+    margin: 0;
+    font-size: 1.05em;
+  }
+  header.doc-header .meta {
+    margin-top: 15px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.9em;
+    color: var(--text-muted);
+  }
+
+  /* TITULOS DE SECCIÓN */
+  h2 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--accent);
+    font-size: 1.45em;
+    margin-top: 50px;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  h2 .section-num {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 0.85em;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  h3 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--primary-dark);
+    font-size: 1.15em;
+    margin-top: 28px;
+    margin-bottom: 10px;
+  }
+
+  h4 {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+    font-size: 1em;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  p { margin: 0 0 12px 0; }
+
+  /* TABLA DE CONTENIDOS */
+  .toc {
+    background: var(--soft);
+    border-left: 4px solid var(--primary);
+    padding: 20px 25px;
+    margin: 25px 0 40px 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.95em;
+  }
+  .toc h3 {
+    margin-top: 0;
+    color: var(--accent);
+    font-size: 1em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .toc ol { margin: 8px 0 0 0; padding-left: 22px; }
+  .toc li { margin-bottom: 4px; }
+  .toc a {
+    color: var(--primary-dark);
+    text-decoration: none;
+  }
+  .toc a:hover { text-decoration: underline; }
+
+  /* CAJAS DE CONCEPTO */
+  .concept-box {
+    background: var(--soft);
+    border-left: 5px solid var(--primary);
+    padding: 18px 22px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .concept-box .label {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.78em;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--primary);
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .concept-box p:last-child { margin-bottom: 0; }
+
+  .key-idea {
+    background: var(--highlight);
+    border-left: 5px solid var(--warm);
+    padding: 18px 22px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .key-idea .label {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.78em;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--warm);
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .warning-box {
+    background: #FDF1ED;
+    border-left: 5px solid var(--warm);
+    padding: 16px 22px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .warning-box .label {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.78em;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--warm);
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  /* FÓRMULAS */
+  .formula {
+    background: var(--accent);
+    color: #FFFFFF;
+    font-family: "Cambria Math", Cambria, Georgia, serif;
+    text-align: center;
+    padding: 18px 20px;
+    margin: 18px auto;
+    border-radius: 6px;
+    font-size: 1.15em;
+    letter-spacing: 0.02em;
+  }
+  .formula .label {
+    display: block;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #B7C5DD;
+    margin-bottom: 8px;
+  }
+
+  /* TABLAS */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 18px 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.93em;
+  }
+  th {
+    background: var(--accent);
+    color: white;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    border: 1px solid var(--accent);
+  }
+  td {
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) { background: var(--soft); }
+
+  td.sig-yes { background: #E8F0E2 !important; font-weight: 600; color: var(--green); }
+  td.sig-no { color: var(--text-muted); font-style: italic; }
+  td.outlier { background: #FDE8DC !important; color: var(--warm); font-weight: 600; }
+  td.center { text-align: center; }
+
+  /* CÓDIGO */
+  pre {
+    background: #1F2A30;
+    color: #E8EFF2;
+    padding: 14px 18px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 0.88em;
+    line-height: 1.5;
+    margin: 12px 0;
+  }
+  code {
+    font-family: Consolas, "Courier New", monospace;
+    background: #EAF1F4;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 0.92em;
+    color: var(--primary-dark);
+  }
+  pre code {
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+  }
+  .code-output {
+    color: #97BC62;
+    font-style: italic;
+  }
+
+  /* TARJETAS DE EJEMPLO */
+  .example-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 25px 0;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .example-card .card-header {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+    color: white;
+    padding: 14px 22px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+  .example-card .card-header .tag {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.85;
+    display: block;
+  }
+  .example-card .card-header .title {
+    font-size: 1.15em;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  .example-card .card-body { padding: 20px 25px; }
+  .example-card .card-body > *:first-child { margin-top: 0; }
+  .example-card .card-body > *:last-child { margin-bottom: 0; }
+
+  /* GRID DE ESTUDIANTES (Ejemplo 1) */
+  .student-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 18px 0;
+  }
+  .student {
+    background: var(--soft);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    text-align: center;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+  .student.normal { border-top: 4px solid #97BC62; }
+  .student.alert { border-top: 4px solid #E0B23B; }
+  .student.danger { border-top: 4px solid var(--warm); }
+  .student.cold { border-top: 4px solid var(--primary); }
+  .student .name { font-weight: bold; color: var(--text-muted); font-size: 0.85em; text-transform: uppercase; }
+  .student .temp { font-size: 1.7em; font-weight: bold; margin: 6px 0 2px; color: var(--accent); }
+  .student .z { font-family: "Cambria Math", Cambria, serif; color: var(--primary-dark); font-size: 1em; }
+  .student .verdict { margin-top: 6px; font-size: 0.85em; font-style: italic; color: var(--text); }
+
+  /* DOS COLUMNAS */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 18px 0;
+  }
+  .col-box {
+    background: var(--soft);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+  }
+  .col-box h4 { margin-top: 0; }
+
+  /* INTERPRETACIÓN DEL I DE MORÁN — TARJETAS */
+  .moran-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+  }
+  .moran-card {
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px;
+    background: white;
+  }
+  .moran-card.positive { border-top: 4px solid var(--green); }
+  .moran-card.positive2 { border-top: 4px solid var(--primary); }
+  .moran-card.no-sig { border-top: 4px solid var(--text-muted); opacity: 0.92; }
+  .moran-card .head {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--accent);
+  }
+  .moran-card .stats {
+    display: flex;
+    gap: 14px;
+    font-family: "Cambria Math", Cambria, serif;
+    margin: 10px 0;
+    flex-wrap: wrap;
+  }
+  .moran-card .stats .stat {
+    display: flex;
+    flex-direction: column;
+  }
+  .moran-card .stats .stat .l {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.7em;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+  .moran-card .stats .stat .v {
+    font-size: 1.15em;
+    font-weight: bold;
+    color: var(--accent);
+  }
+  .moran-card .desc {
+    font-size: 0.9em;
+    margin-top: 8px;
+    line-height: 1.5;
+  }
+
+  /* LAG ESPACIAL — diagrama con polígonos */
+  .lag-diagram {
+    background: var(--soft);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+  }
+  .lag-diagram svg { max-width: 100%; height: auto; }
+  .lag-diagram .caption {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.85em;
+    color: var(--text-muted);
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  /* TABLA DE CÁLCULO DEL LAG (estilo limpio) */
+  table.lag-calc { font-size: 0.9em; }
+  table.lag-calc td.formula-cell {
+    font-family: "Cambria Math", Cambria, serif;
+    font-style: italic;
+    color: var(--primary-dark);
+  }
+  table.lag-calc td.result-cell {
+    font-family: "Cambria Math", Cambria, serif;
+    font-weight: bold;
+    color: var(--accent);
+  }
+
+  /* CUADRANTES DEL MORAN SCATTERPLOT */
+  .quadrant-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin: 18px 0;
+    border: 2px solid var(--accent);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .quadrant {
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    background: white;
+    min-height: 100px;
+  }
+  .quadrant.hh { background: #FDE8DC; border-top: 4px solid var(--warm); }
+  .quadrant.ll { background: #DCE6F0; border-top: 4px solid var(--primary-dark); }
+  .quadrant.hl { background: #FFF6E0; border-top: 4px solid #E0B23B; }
+  .quadrant.lh { background: #E8F0E2; border-top: 4px solid var(--green); }
+  .quadrant .qcode {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: bold;
+    font-size: 0.95em;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .quadrant .qname {
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .quadrant .qdesc {
+    font-size: 0.85em;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  /* PRÁCTICA */
+  .practice {
+    background: var(--green-light);
+    border-left: 5px solid var(--green);
+    padding: 16px 22px;
+    margin: 20px 0;
+    border-radius: 0 6px 6px 0;
+  }
+  .practice .question {
+    font-weight: 600;
+    color: var(--green);
+    margin-bottom: 6px;
+  }
+  .practice .answer {
+    background: white;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-top: 10px;
+    border: 1px dashed var(--green);
+    cursor: pointer;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+  .practice details summary {
+    cursor: pointer;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: var(--green);
+    font-weight: 600;
+    font-size: 0.9em;
+    margin-top: 8px;
+  }
+  .practice details[open] summary { margin-bottom: 8px; }
+  .practice details .reveal {
+    background: white;
+    padding: 10px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--green);
+    font-family: Georgia, serif;
+  }
+
+  /* REGLAS DE BOLSILLO */
+  .pocket-rules {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin: 20px 0 30px;
+  }
+  .pocket-rule {
+    background: var(--soft);
+    border-radius: 8px;
+    padding: 18px 20px;
+    border-top: 4px solid var(--primary);
+  }
+  .pocket-rule.rule-2 { border-top-color: var(--accent); }
+  .pocket-rule.rule-3 { border-top-color: var(--green); }
+  .pocket-rule.rule-4 { border-top-color: var(--warm); }
+  .pocket-rule .icon {
+    font-size: 1.6em;
+    margin-bottom: 6px;
+  }
+  .pocket-rule .title {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: bold;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-size: 1em;
+  }
+  .pocket-rule .text {
+    font-size: 0.9em;
+    line-height: 1.5;
+  }
+
+  /* REFERENCIAS */
+  .references {
+    margin-top: 50px;
+    padding-top: 25px;
+    border-top: 3px double var(--primary);
+  }
+  .references ol {
+    padding-left: 20px;
+    counter-reset: ref;
+  }
+  .references li {
+    margin-bottom: 12px;
+    line-height: 1.5;
+    font-size: 0.93em;
+    text-align: justify;
+    text-indent: -20px;
+    padding-left: 20px;
+  }
+
+  /* PIE */
+  footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.85em;
+    color: var(--text-muted);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    text-align: center;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    body { padding: 20px 15px 40px; }
+    header.doc-header h1 { font-size: 1.5em; }
+    .two-col { grid-template-columns: 1fr; }
+    table { font-size: 0.85em; }
+    th, td { padding: 7px 8px; }
+  }
+
+  @media print {
+    body { max-width: 100%; padding: 0; }
+    .practice details { open: true; }
+    pre { font-size: 0.75em; }
+  }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <p class="course">Laboratorio · Material de repaso</p>
+  <h1>Z-score, P-value e Hipótesis Nula</h1>
+  <p class="subtitle">Del concepto abstracto a la realidad geográfica — aplicaciones al I de Morán</p>
+  <div class="meta">
+    GF-0624 · Cartografía Multivariada y Geovisualización<br>
+    MSc. María José Molina Montero · Universidad de Costa Rica
+  </div>
+</header>
+
+<div class="toc">
+  <h3>Contenido</h3>
+  <ol>
+    <li><a href="#intro">Por qué necesitamos estos tres conceptos</a></li>
+    <li><a href="#zscore">El Z-score: una distancia en sigmas</a></li>
+    <li><a href="#pvalue">El P-value y la hipótesis nula</a></li>
+    <li><a href="#ej1">Ejemplo 1 — Temperatura corporal</a></li>
+    <li><a href="#ej2">Ejemplo 2 — Notas del examen</a></li>
+    <li><a href="#moran">El puente: del z-score al I de Morán</a></li>
+    <li><a href="#lag">El lag espacial: el ingrediente que falta</a></li>
+    <li><a href="#ej3">Ejemplo 3 — COVID-19 en cantones de Costa Rica</a></li>
+    <li><a href="#ej4">Ejemplo 4 — Interpretando el I de Morán</a></li>
+    <li><a href="#practica">Práctica guiada con outputs de Python</a></li>
+    <li><a href="#recordar">Para recordar siempre</a></li>
+    <li><a href="#referencias">Referencias bibliográficas</a></li>
+  </ol>
+</div>
+
+<!-- ========== 1. INTRODUCCIÓN ========== -->
+<h2 id="intro"><span class="section-num">1</span>Por qué necesitamos estos tres conceptos</h2>
+
+<p>Cuando calculamos un valor en estadística espacial — sea una temperatura, una nota, un número de casos o un I de Morán — siempre enfrentamos la misma pregunta:</p>
+
+<div class="key-idea">
+  <p class="label">La pregunta de fondo</p>
+  <p>¿El valor que observo es <strong>realmente distinto</strong> de lo esperado, o podría haber surgido <strong>por puro azar</strong>?</p>
+</div>
+
+<p>Para responder con criterio estadístico necesitamos tres herramientas que trabajan en conjunto:</p>
+
+<ul>
+  <li><strong>El Z-score</strong> — convierte cualquier valor en una distancia comparable, medida en desviaciones estándar.</li>
+  <li><strong>El P-value</strong> — traduce esa distancia a una probabilidad: ¿qué tan raro es este resultado bajo el supuesto de azar?</li>
+  <li><strong>La hipótesis nula (H₀)</strong> — el escenario base que asumimos verdadero hasta tener evidencia suficiente para rechazarlo.</li>
+</ul>
+
+<p>Estos tres conceptos no son exclusivos de la geografía: son el lenguaje común de la inferencia estadística. Pero en análisis espacial adquieren un sabor particular, porque la H₀ se vuelve <em>aleatoriedad espacial completa</em> y los datos están localizados sobre un territorio.</p>
+
+<!-- ========== 2. Z-SCORE ========== -->
+<h2 id="zscore"><span class="section-num">2</span>El Z-score: una distancia en sigmas</h2>
+
+<p>El z-score (también llamado <em>puntaje estandarizado</em>) responde a una pregunta sencilla: <strong>¿qué tan lejos del promedio está mi observación, medida en desviaciones estándar?</strong></p>
+
+<div class="formula">
+  <span class="label">Fórmula del z-score</span>
+  z = ( x − μ ) / σ
+</div>
+
+<p>Donde:</p>
+<ul>
+  <li><strong>x</strong> es el valor observado.</li>
+  <li><strong>μ</strong> (mu) es la media poblacional o esperada.</li>
+  <li><strong>σ</strong> (sigma) es la desviación estándar.</li>
+</ul>
+
+<div class="concept-box">
+  <p class="label">Lo importante de entender</p>
+  <p>El z-score <strong>no tiene unidades</strong>. Convierte temperaturas, notas, casos COVID o índices de Morán al mismo lenguaje universal: "cuántas sigmas me alejo del valor esperado". Un z = +2 significa exactamente lo mismo en todos los contextos: estoy 2 desviaciones estándar por encima del promedio.</p>
+</div>
+
+<h3>Valores de referencia que conviene memorizar</h3>
+
+<table>
+  <thead>
+    <tr><th>|z|</th><th>Probabilidad acumulada</th><th>Interpretación</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center">≥ 1.65</td><td class="center">p &lt; 0.10</td><td>Resultado relativamente inusual (90% confianza)</td></tr>
+    <tr><td class="center">≥ 1.96</td><td class="center">p &lt; 0.05</td><td><strong>Umbral clásico de significancia</strong> (95% confianza)</td></tr>
+    <tr><td class="center">≥ 2.58</td><td class="center">p &lt; 0.01</td><td>Muy inusual (99% confianza)</td></tr>
+    <tr><td class="center">≥ 3.29</td><td class="center">p &lt; 0.001</td><td>Extremadamente inusual (99.9% confianza)</td></tr>
+  </tbody>
+</table>
+
+<!-- ========== 3. P-VALUE Y H0 ========== -->
+<h2 id="pvalue"><span class="section-num">3</span>El P-value y la hipótesis nula</h2>
+
+<h3>La hipótesis nula (H₀)</h3>
+
+<p>La H₀ es siempre el "supuesto aburrido" — la afirmación de que <strong>no pasa nada interesante</strong>:</p>
+
+<ul>
+  <li>En una nota: H₀ = "el grupo rinde igual al promedio histórico".</li>
+  <li>En una temperatura: H₀ = "el paciente tiene temperatura normal".</li>
+  <li>En el I de Morán: H₀ = "<strong>la distribución espacial del fenómeno es completamente aleatoria</strong>".</li>
+</ul>
+
+<p>El trabajo del análisis estadístico no es <em>probar</em> que H₀ es verdadera, sino preguntarnos: <em>¿hay suficiente evidencia para rechazarla?</em></p>
+
+<h3>El P-value</h3>
+
+<div class="key-idea">
+  <p class="label">Definición operativa</p>
+  <p>El <strong>p-value</strong> es la probabilidad de obtener un resultado <em>tan extremo o más extremo</em> que el observado, <strong>asumiendo que H₀ es verdadera</strong>.</p>
+</div>
+
+<p>Un p-value pequeño (típicamente p &lt; 0.05) significa: "Si H₀ fuera cierta, este resultado ocurriría menos del 5% de las veces. Es lo bastante raro como para dudar de H₀."</p>
+
+<div class="warning-box">
+  <p class="label">Atención: errores frecuentes de interpretación</p>
+  <p><strong>El p-value NO es</strong> la probabilidad de que H₀ sea verdadera. Es la probabilidad de los datos <em>dado</em> que H₀ es verdadera. La diferencia es enorme.</p>
+  <p><strong>p pequeño ≠ efecto grande.</strong> Un p &lt; 0.001 solo dice "no es azar". La magnitud del efecto la da otro estadístico (en el I de Morán, el propio I).</p>
+</div>
+
+<!-- ========== 4. EJEMPLO 1 — TEMPERATURA ========== -->
+<h2 id="ej1"><span class="section-num">4</span>Ejemplo 1 — Temperatura corporal: construyendo la intuición</h2>
+
+<div class="example-card">
+  <div class="card-header">
+    <span class="tag">Ejemplo 1 · Cotidiano</span>
+    <div class="title">¿Cuándo decimos que alguien tiene fiebre?</div>
+  </div>
+  <div class="card-body">
+    <p>Si la temperatura corporal normal es 36.6°C con desviación estándar 0.5°C, podemos calcular el z-score de cualquier persona:</p>
+
+    <div class="formula">
+      z = (temperatura − 36.6) / 0.5
+    </div>
+
+    <h4>Cuatro estudiantes en consulta</h4>
+    <div class="student-grid">
+      <div class="student normal">
+        <div class="name">Estudiante A</div>
+        <div class="temp">36.4°C</div>
+        <div class="z">z = −0.40</div>
+        <div class="verdict">Normal</div>
+      </div>
+      <div class="student alert">
+        <div class="name">Estudiante B</div>
+        <div class="temp">37.2°C</div>
+        <div class="z">z = +1.20</div>
+        <div class="verdict">Leve alerta</div>
+      </div>
+      <div class="student danger">
+        <div class="name">Estudiante C</div>
+        <div class="temp">38.5°C</div>
+        <div class="z">z = +3.80</div>
+        <div class="verdict">Fiebre significativa</div>
+      </div>
+      <div class="student cold">
+        <div class="name">Estudiante D</div>
+        <div class="temp">35.8°C</div>
+        <div class="z">z = −1.60</div>
+        <div class="verdict">Hipotermia leve</div>
+      </div>
+    </div>
+
+    <h4>¿A partir de qué temperatura decimos "fiebre"?</h4>
+    <p>Si fijamos como umbral z ≥ 1.96 (es decir, p &lt; 0.05), podemos despejar la temperatura correspondiente:</p>
+
+    <pre><code>z = (x − 36.6) / 0.5
+1.96 = (x − 36.6) / 0.5
+x = 36.6 + 1.96 × 0.5
+x = <strong>37.58°C</strong></code></pre>
+
+    <p>Cualquier temperatura por encima de 37.58°C corresponde a un z &gt; 1.96, un p &lt; 0.05, y por tanto un resultado <em>estadísticamente inusual con 95% de confianza</em>. La medicina lo llama "fiebre".</p>
+
+    <div class="key-idea">
+      <p class="label">Conexión con el I de Morán</p>
+      <p>Exactamente el mismo razonamiento aplica al análisis espacial. Cuando el z-score del I de Morán supera 1.96, decimos que el patrón espacial observado es "fiebre geográfica" — demasiado estructurado para ser producto del azar.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 5. EJEMPLO 2 — NOTAS ========== -->
+<h2 id="ej2"><span class="section-num">5</span>Ejemplo 2 — ¿Rindió el grupo distinto al promedio histórico?</h2>
+
+<div class="example-card">
+  <div class="card-header">
+    <span class="tag">Ejemplo 2 · Decisión académica</span>
+    <div class="title">Comparando una muestra contra una población</div>
+  </div>
+  <div class="card-body">
+    <p>Un docente quiere saber si el grupo de este semestre rindió diferente al promedio histórico del curso.</p>
+
+    <div class="two-col">
+      <div class="col-box">
+        <h4>Datos disponibles</h4>
+        <table style="margin: 0;">
+          <tbody>
+            <tr><td>Media histórica (μ)</td><td><strong>65 puntos</strong></td></tr>
+            <tr><td>Desviación estándar (σ)</td><td><strong>12 puntos</strong></td></tr>
+            <tr><td>Media del grupo (x̄)</td><td><strong>72 puntos</strong></td></tr>
+            <tr><td>n estudiantes</td><td><strong>30</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-box">
+        <h4>Cálculo del z-score</h4>
+<pre style="margin:0;"><code>Error estándar = σ / √n
+              = 12 / √30
+              = 2.19
+
+z = (72 − 65) / 2.19
+z = 7 / 2.19
+z = <strong>3.20</strong></code></pre>
+      </div>
+    </div>
+
+    <div class="concept-box">
+      <p class="label">Decisión estadística</p>
+      <p>z = 3.20 → p ≈ 0.0014 → <strong>rechazamos H₀</strong>. El grupo no es promedio: su rendimiento es estadísticamente superior al histórico, con más del 99% de confianza.</p>
+    </div>
+
+    <h4>Contraste: ¿y si el grupo hubiera promediado 67?</h4>
+    <p>Con la misma fórmula:</p>
+    <pre><code>z = (67 − 65) / 2.19 = <strong>0.91</strong>   →   p ≈ 0.36   →   <span class="code-output">No rechazamos H₀</span></code></pre>
+    <p>La diferencia de 2 puntos sobre el promedio podría perfectamente deberse a variación normal entre grupos. Sin un z-score suficientemente alto, no podemos afirmar que el grupo sea distinto.</p>
+
+    <div class="key-idea">
+      <p class="label">Lo que cambia entre 67 y 72</p>
+      <p>Solo 5 puntos de diferencia, pero la conclusión cambia radicalmente. Por eso el z-score (y no la diferencia bruta) es lo que decide significancia.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 6. PUENTE AL I DE MORÁN ========== -->
+<h2 id="moran"><span class="section-num">6</span>El puente: del z-score clásico al I de Morán</h2>
+
+<p>Hasta aquí, todo ha sido estadística clásica. Ahora damos el salto a la geografía. El <strong>I de Morán</strong> mide cuánto se parecen los valores de unidades espaciales <em>vecinas</em> entre sí. Su rango natural es aproximadamente [−1, +1]:</p>
+
+<table>
+  <thead>
+    <tr><th>Valor de I</th><th>Patrón espacial</th><th>Interpretación geográfica</th></tr>
+  </thead>
+  <tbody>
+    <tr><td class="center"><strong>I ≈ +1</strong></td><td>Agrupado (clúster)</td><td>Valores altos rodean a otros altos; valores bajos rodean a otros bajos.</td></tr>
+    <tr><td class="center"><strong>I ≈ 0</strong></td><td>Aleatorio</td><td>No hay patrón espacial — los valores se distribuyen al azar sobre el territorio.</td></tr>
+    <tr><td class="center"><strong>I ≈ −1</strong></td><td>Disperso</td><td>Valores altos rodean a bajos y viceversa (poco frecuente en fenómenos sociales).</td></tr>
+  </tbody>
+</table>
+
+<h3>El problema: ¿desde qué valor de I decimos que hay un patrón real?</h3>
+
+<p>Como bien señalan Siabato y Guzmán-Manrique (2019), una pregunta lógica que surge inmediatamente es: ¿qué tan distinto de cero debe ser el índice para que realmente indique agrupamiento o dispersión? La respuesta — <em>otra vez</em> — viene del z-score y de una prueba de hipótesis basada en la <strong>Aleatoriedad Espacial Completa (CSR)</strong>.</p>
+
+<div class="formula">
+  <span class="label">Z-score del I de Morán</span>
+  z<sub>I</sub> = ( I − E[I] ) / √V[I]
+</div>
+
+<p>Donde E[I] es el valor esperado del índice bajo H₀ (CSR) y V[I] es su varianza teórica. La hipótesis nula en este caso es muy específica:</p>
+
+<div class="key-idea">
+  <p class="label">H₀ en autocorrelación espacial</p>
+  <p><strong>"El fenómeno se distribuye aleatoriamente sobre el espacio."</strong> Es decir, no hay relación entre la ubicación de las unidades y los valores que toman.</p>
+</div>
+
+<p>Si rechazamos H₀ (porque z<sub>I</sub> es lo bastante grande y p &lt; 0.05), concluimos que el patrón espacial <strong>no es producto del azar</strong>: hay estructura geográfica.</p>
+
+<div class="warning-box">
+  <p class="label">La matriz de pesos espaciales W</p>
+  <p>Ningún I de Morán existe al margen de una definición de vecindad. La matriz W establece <strong>qué unidades se consideran vecinas y con qué intensidad se vinculan</strong>. Los criterios más comunes son:</p>
+  <ul style="margin-top: 8px; margin-bottom: 0;">
+    <li><strong>Contigüidad</strong> (Reina/Torre): vecinos según contacto entre polígonos.</li>
+    <li><strong>k vecinos más cercanos</strong>: cada unidad se conecta con sus k observaciones más próximas.</li>
+    <li><strong>Bandas de distancia</strong>: vecinas todas las unidades dentro de un umbral.</li>
+    <li><strong>Pesos inversos a la distancia</strong>: las cercanas pesan más, las lejanas menos.</li>
+  </ul>
+  <p style="margin-top: 8px; margin-bottom: 0;"><em>Dos análisis sobre la misma variable pueden producir resultados distintos si cambian los criterios de vecindad.</em></p>
+</div>
+
+<!-- ========== 7. LAG ESPACIAL ========== -->
+<h2 id="lag"><span class="section-num">7</span>El lag espacial: el ingrediente que falta</h2>
+
+<p>Hasta ahora hemos hablado del z-score de un valor individual y de la matriz W que define vecindades. Falta unir las dos piezas. El concepto que las une — y que está en el corazón mismo del I de Morán — es el <strong>lag espacial</strong> (o <em>retardo espacial</em>, también traducido como <em>desfase espacial</em>).</p>
+
+<div class="key-idea">
+  <p class="label">Definición intuitiva</p>
+  <p>El <strong>lag espacial</strong> de una unidad geográfica es el <strong>promedio ponderado del valor de sus vecinos</strong>. Responde a la pregunta: "¿qué valor tiene este fenómeno <em>alrededor</em> de mí?"</p>
+</div>
+
+<h3>La fórmula</h3>
+
+<p>Si tenemos una variable <em>x</em> medida en cada unidad <em>i</em>, el lag espacial de la unidad <em>i</em> se define como:</p>
+
+<div class="formula">
+  <span class="label">Lag espacial de la unidad i</span>
+  Wx<sub>i</sub> = Σ<sub>j</sub> w<sub>ij</sub> · x<sub>j</sub>
+</div>
+
+<p>Donde <em>w<sub>ij</sub></em> es el peso entre la unidad <em>i</em> y su vecina <em>j</em> (definido por la matriz W), y <em>x<sub>j</sub></em> es el valor de la variable en esa vecina. Cuando la matriz está <strong>estandarizada por filas</strong> (cada fila suma 1 — la convención más común en pysal), el lag se vuelve directamente el <strong>promedio</strong> de los valores vecinos.</p>
+
+<div class="concept-box">
+  <p class="label">Lo que hay que entender</p>
+  <p>Cada unidad geográfica termina con <strong>dos números asociados</strong>: su propio valor (<em>x<sub>i</sub></em>) y el valor de sus vecinos (<em>Wx<sub>i</sub></em>). El I de Morán es esencialmente la <strong>correlación entre estas dos columnas</strong> en todo el conjunto de unidades.</p>
+</div>
+
+<h3>Un cálculo paso a paso</h3>
+
+<p>Imagina cinco cantones en una pequeña región. La columna "Casos" es nuestra variable <em>x</em>; la columna "Vecinos" indica con qué cantones comparte frontera (criterio de contigüidad tipo Reina). Calculamos el lag espacial estandarizado por filas:</p>
+
+<table class="lag-calc">
+  <thead>
+    <tr>
+      <th>Cantón</th>
+      <th class="center">Casos (x<sub>i</sub>)</th>
+      <th>Vecinos (j)</th>
+      <th class="center">Casos vecinos</th>
+      <th class="center">Lag espacial (Wx<sub>i</sub>)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A</td>
+      <td class="center">100</td>
+      <td>B, C</td>
+      <td class="center">80, 90</td>
+      <td class="result-cell center">(80 + 90) / 2 = <strong>85</strong></td>
+    </tr>
+    <tr>
+      <td>B</td>
+      <td class="center">80</td>
+      <td>A, C, D</td>
+      <td class="center">100, 90, 30</td>
+      <td class="result-cell center">(100 + 90 + 30) / 3 = <strong>73.3</strong></td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td class="center">90</td>
+      <td>A, B, D, E</td>
+      <td class="center">100, 80, 30, 20</td>
+      <td class="result-cell center">(100 + 80 + 30 + 20) / 4 = <strong>57.5</strong></td>
+    </tr>
+    <tr>
+      <td>D</td>
+      <td class="center">30</td>
+      <td>B, C, E</td>
+      <td class="center">80, 90, 20</td>
+      <td class="result-cell center">(80 + 90 + 20) / 3 = <strong>63.3</strong></td>
+    </tr>
+    <tr>
+      <td>E</td>
+      <td class="center">20</td>
+      <td>C, D</td>
+      <td class="center">90, 30</td>
+      <td class="result-cell center">(90 + 30) / 2 = <strong>60</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Fíjate en lo que pasó: el cantón A tiene 100 casos <em>y</em> sus vecinos promedian 85 (también alto). El cantón E tiene 20 casos y sus vecinos promedian 60 (mucho más altos que él). Esa relación entre <em>x<sub>i</sub></em> y <em>Wx<sub>i</sub></em> es lo que el I de Morán resume en un solo número.</p>
+
+<h3>Visualizando el lag: una mini geografía</h3>
+
+<div class="lag-diagram">
+<svg viewBox="0 0 520 280" xmlns="http://www.w3.org/2000/svg">
+  <!-- Polígonos representando los 5 cantones -->
+  <!-- A (alto, 100) -->
+  <polygon points="60,40 160,40 170,120 50,130" fill="#B85042" stroke="#21295C" stroke-width="2"/>
+  <text x="105" y="80" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">A</text>
+  <text x="105" y="98" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="white" text-anchor="middle">x=100</text>
+  <text x="105" y="112" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#FFE3D9" text-anchor="middle" font-style="italic">Wx=85</text>
+
+  <!-- B (alto-medio, 80) -->
+  <polygon points="170,120 290,110 300,200 180,210" fill="#D67862" stroke="#21295C" stroke-width="2"/>
+  <text x="235" y="155" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">B</text>
+  <text x="235" y="172" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="white" text-anchor="middle">x=80</text>
+  <text x="235" y="186" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#FCE5DC" text-anchor="middle" font-style="italic">Wx=73.3</text>
+
+  <!-- C (medio-alto, 90) - cantón central, frontera con todos -->
+  <polygon points="160,40 290,50 310,120 290,110 170,120" fill="#C56A55" stroke="#21295C" stroke-width="2"/>
+  <text x="230" y="80" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">C</text>
+  <text x="230" y="98" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="white" text-anchor="middle">x=90, Wx=57.5</text>
+
+  <!-- D (bajo, 30) -->
+  <polygon points="300,200 410,190 420,260 310,270" fill="#84B59F" stroke="#21295C" stroke-width="2"/>
+  <text x="365" y="225" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">D</text>
+  <text x="365" y="242" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="white" text-anchor="middle">x=30</text>
+  <text x="365" y="256" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#E1EEE7" text-anchor="middle" font-style="italic">Wx=63.3</text>
+
+  <!-- E (muy bajo, 20) -->
+  <polygon points="310,120 440,110 450,190 410,190 300,200" fill="#A7BEAE" stroke="#21295C" stroke-width="2"/>
+  <text x="375" y="155" font-family="Helvetica, Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">E</text>
+  <text x="375" y="172" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="white" text-anchor="middle">x=20, Wx=60</text>
+
+  <!-- Leyenda -->
+  <rect x="55" y="240" width="20" height="15" fill="#B85042" stroke="#21295C" stroke-width="1"/>
+  <text x="80" y="252" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#1F2A30">Casos altos</text>
+  <rect x="155" y="240" width="20" height="15" fill="#84B59F" stroke="#21295C" stroke-width="1"/>
+  <text x="180" y="252" font-family="Helvetica, Arial, sans-serif" font-size="11" fill="#1F2A30">Casos bajos</text>
+</svg>
+<p class="caption">Cada cantón muestra su propio valor (x) y el promedio de sus vecinos (Wx). El I de Morán mide cuánto se relacionan estas dos columnas en el conjunto del territorio.</p>
+</div>
+
+<h3>El gráfico de dispersión de Morán y los cuatro cuadrantes</h3>
+
+<p>Si en un plano cartesiano graficamos cada unidad usando como eje X su valor estandarizado (z<sub>i</sub>) y como eje Y su lag espacial estandarizado (Wz<sub>i</sub>), obtenemos el famoso <strong>Moran scatterplot</strong> de Anselin (1995). La pendiente de la recta de regresión sobre esa nube es, precisamente, el valor del I de Morán.</p>
+
+<p>El plano queda dividido en cuatro cuadrantes que tienen significado geográfico directo:</p>
+
+<div class="quadrant-grid">
+  <div class="quadrant lh">
+    <div class="qcode">LH (cuadrante II)</div>
+    <div class="qname">Bajo rodeado de altos</div>
+    <div class="qdesc">Valor propio bajo, vecinos altos. <em>Outlier espacial frío</em> dentro de una zona caliente.</div>
+  </div>
+  <div class="quadrant hh">
+    <div class="qcode">HH (cuadrante I)</div>
+    <div class="qname">Alto rodeado de altos</div>
+    <div class="qdesc">Valor propio alto, vecinos altos. <strong>Hotspot</strong> — clúster de altos casos / valores.</div>
+  </div>
+  <div class="quadrant ll">
+    <div class="qcode">LL (cuadrante III)</div>
+    <div class="qname">Bajo rodeado de bajos</div>
+    <div class="qdesc">Valor propio bajo, vecinos bajos. <strong>Coldspot</strong> — clúster de valores bajos.</div>
+  </div>
+  <div class="quadrant hl">
+    <div class="qcode">HL (cuadrante IV)</div>
+    <div class="qname">Alto rodeado de bajos</div>
+    <div class="qdesc">Valor propio alto, vecinos bajos. <em>Outlier espacial caliente</em> aislado en zona fría.</div>
+  </div>
+</div>
+
+<div class="concept-box">
+  <p class="label">Por qué esto importa</p>
+  <p>Cuando los puntos del scatterplot se concentran en los cuadrantes <strong>HH y LL</strong>, la pendiente es positiva → I &gt; 0 → autocorrelación positiva (clústeres). Cuando se concentran en <strong>HL y LH</strong>, la pendiente es negativa → I &lt; 0 → autocorrelación negativa (dispersión, patrón de tablero de ajedrez).</p>
+</div>
+
+<h3>El lag en código (PySAL)</h3>
+
+<p>En la práctica, calcular el lag espacial en Python es una sola línea:</p>
+
+<pre><code>from libpysal.weights import Queen
+from esda.moran import Moran
+from libpysal.weights import lag_spatial
+
+# Construir matriz de vecindad tipo Reina
+w = Queen.from_dataframe(cantones)
+w.transform = 'r'    <span class="code-output"># estandarización por filas → lag = promedio</span>
+
+# Calcular el lag espacial de la variable
+cantones['casos_lag'] = lag_spatial(w, cantones['casos'].values)
+
+# El I de Morán usa internamente este lag
+mi = Moran(cantones['casos'].values, w, permutations=999)
+print(mi.I, mi.z_norm, mi.p_sim)</code></pre>
+
+<div class="warning-box">
+  <p class="label">Detalles que cambian la interpretación</p>
+  <p>El lag <strong>no es único</strong>: depende de la matriz W que elijas. La misma variable puede tener un lag muy distinto bajo Reina vs. k vecinos cercanos. Por eso, antes de interpretar el I, siempre hay que reportar:</p>
+  <ul style="margin-top: 8px; margin-bottom: 0;">
+    <li>Qué criterio de vecindad se usó (Reina, Torre, k-NN, distancia, etc.).</li>
+    <li>El orden de contigüidad si aplica (1er, 2do orden).</li>
+    <li>Si la matriz fue estandarizada por filas (lo más común) o se usó en su forma binaria.</li>
+  </ul>
+</div>
+
+<!-- ========== 8. EJEMPLO 3 — COVID ========== -->
+<h2 id="ej3"><span class="section-num">8</span>Ejemplo 3 — COVID-19 en cantones de Costa Rica</h2>
+
+<div class="example-card">
+  <div class="card-header">
+    <span class="tag">Ejemplo 3 · Aplicación territorial</span>
+    <div class="title">Identificando cantones atípicos por z-score</div>
+  </div>
+  <div class="card-body">
+    <p>Calculamos el z-score del número de casos COVID-19 por cantón. Los cantones con z &gt; 1.96 (sombreados) tienen una concentración estadísticamente atípica:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Cantón</th>
+          <th class="center">Casos</th>
+          <th class="center">Z-score</th>
+          <th class="center">p &lt; 0.05</th>
+          <th class="center">Patrón</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>San José</td><td class="center outlier">21,285</td><td class="center outlier">+4.82</td><td class="sig-yes center">Sí</td><td class="center">HH</td></tr>
+        <tr><td>Alajuela</td><td class="center outlier">12,464</td><td class="center outlier">+2.61</td><td class="sig-yes center">Sí</td><td class="center">HH</td></tr>
+        <tr><td>Desamparados</td><td class="center outlier">9,877</td><td class="center outlier">+1.98</td><td class="sig-yes center">Sí</td><td class="center">HH</td></tr>
+        <tr><td>San Carlos</td><td class="center">7,117</td><td class="center">+1.21</td><td class="sig-no center">No</td><td class="sig-no center">neutro</td></tr>
+        <tr><td>Heredia</td><td class="center">6,222</td><td class="center">+0.98</td><td class="sig-no center">No</td><td class="sig-no center">neutro</td></tr>
+        <tr><td>Alajuelita</td><td class="center">5,840</td><td class="center">+0.87</td><td class="sig-no center">No</td><td class="sig-no center">neutro</td></tr>
+        <tr><td>Puntarenas</td><td class="center">5,549</td><td class="center">+0.79</td><td class="sig-no center">No</td><td class="sig-no center">neutro</td></tr>
+        <tr><td>Turrubares</td><td class="center">245</td><td class="center">−0.72</td><td class="sig-no center">No</td><td class="sig-no center">neutro</td></tr>
+        <tr><td>Montes de Oro</td><td class="center">198</td><td class="center">−0.75</td><td class="sig-no center">No</td><td class="sig-no center">neutro</td></tr>
+        <tr><td>Los Chiles</td><td class="center">156</td><td class="center">−0.78</td><td class="sig-no center">No</td><td class="sig-no center">neutro</td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-size: 0.9em; color: var(--text-muted); font-style: italic;">Las celdas resaltadas en naranja indican z &gt; 1.96 (resultado estadísticamente atípico, p &lt; 0.05).</p>
+
+    <h3>Dos niveles de z-score: el del cantón vs. el del I de Morán</h3>
+    <p>Aquí surge una distinción crucial que muchos estudiantes confunden:</p>
+
+    <div class="two-col">
+      <div class="col-box" style="border-top: 4px solid var(--primary);">
+        <h4 style="color: var(--primary);">Nivel 1 — Z-score del cantón</h4>
+        <p style="font-size: 0.95em;"><strong>Pregunta:</strong> ¿cuántos casos tiene <em>este</em> cantón comparado con todos los demás?</p>
+        <p style="font-size: 0.95em;"><strong>San José:</strong> z = +4.82 → tiene 4.82 σ más casos que el promedio cantonal.</p>
+        <p style="font-size: 0.9em; color: var(--text-muted); font-style: italic;">Habla de <strong>UN cantón</strong> en relación al conjunto.</p>
+      </div>
+      <div class="col-box" style="border-top: 4px solid var(--accent);">
+        <h4 style="color: var(--accent);">Nivel 2 — Z-score del I de Morán</h4>
+        <p style="font-size: 0.95em;"><strong>Pregunta:</strong> ¿los cantones con muchos casos están rodeados de otros con muchos casos?</p>
+        <p style="font-size: 0.95em;"><strong>I = 0.42, z = +5.85</strong> → el patrón de agrupamiento es 5.85 σ mayor al esperado por azar.</p>
+        <p style="font-size: 0.9em; color: var(--text-muted); font-style: italic;">Habla del <strong>PATRÓN ESPACIAL</strong> en relación a la aleatoriedad.</p>
+      </div>
+    </div>
+
+    <div class="key-idea">
+      <p class="label">Idea clave</p>
+      <p>Son preguntas distintas pero usan <strong>el mismo z-score como herramienta de decisión</strong>. Ambas se evalúan contra el umbral 1.96 y se traducen en un p-value. Lo que cambia es <em>qué</em> H₀ estamos poniendo a prueba.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 9. EJEMPLO 4 — INTERPRETACIÓN DEL I ========== -->
+<h2 id="ej4"><span class="section-num">9</span>Ejemplo 4 — Interpretando el I de Morán</h2>
+
+<div class="example-card">
+  <div class="card-header">
+    <span class="tag">Ejemplo 4 · Lectura completa</span>
+    <div class="title">Tres resultados, tres conclusiones</div>
+  </div>
+  <div class="card-body">
+    <p>La interpretación correcta nunca se basa solo en el valor de I — siempre integra <strong>I + z + p → conclusión</strong>:</p>
+
+    <div class="moran-cards">
+      <div class="moran-card positive">
+        <div class="head">Casos COVID (2020)</div>
+        <div class="stats">
+          <div class="stat"><span class="l">I</span><span class="v">0.42</span></div>
+          <div class="stat"><span class="l">z</span><span class="v">+5.85</span></div>
+          <div class="stat"><span class="l">p</span><span class="v">0.001</span></div>
+        </div>
+        <div class="desc">Autocorrelación espacial <strong>positiva muy significativa</strong>. Los cantones con muchos casos están rodeados de otros con muchos casos. Hay un clúster geográfico claro — probablemente en la GAM.</div>
+      </div>
+      <div class="moran-card positive2">
+        <div class="head">IDH cantonal (2022)</div>
+        <div class="stats">
+          <div class="stat"><span class="l">I</span><span class="v">0.38</span></div>
+          <div class="stat"><span class="l">z</span><span class="v">+3.21</span></div>
+          <div class="stat"><span class="l">p</span><span class="v">0.003</span></div>
+        </div>
+        <div class="desc">Autocorrelación positiva significativa. Los cantones con alto IDH se agrupan (GAM y zonas urbanas). Los de bajo IDH también se agrupan (zonas rurales y costas).</div>
+      </div>
+      <div class="moran-card no-sig">
+        <div class="head">LST zona costera</div>
+        <div class="stats">
+          <div class="stat"><span class="l">I</span><span class="v">−0.12</span></div>
+          <div class="stat"><span class="l">z</span><span class="v">−0.89</span></div>
+          <div class="stat"><span class="l">p</span><span class="v">0.210</span></div>
+        </div>
+        <div class="desc"><strong>No se rechaza H₀.</strong> El patrón de temperatura observado podría ser azar. No hay evidencia de autocorrelación espacial en esta variable a esta escala.</div>
+      </div>
+    </div>
+
+    <h3>El error más frecuente en clase</h3>
+
+    <div class="warning-box">
+      <p class="label">Lo que muchos dicen incorrectamente</p>
+      <p style="font-style: italic;">"El IDH (I = 0.52) tiene más autocorrelación que los casos COVID (I = 0.42), porque 0.52 &gt; 0.42."</p>
+    </div>
+
+    <p>Pero comparar el I directamente entre análisis distintos es un error. Veamos por qué:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Variable</th>
+          <th class="center">I</th>
+          <th class="center">z-score</th>
+          <th class="center">p-value</th>
+          <th class="center">n unidades</th>
+          <th>Matriz W</th>
+          <th>Conclusión correcta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Casos COVID</td>
+          <td class="center">0.42</td>
+          <td class="center">+5.85</td>
+          <td class="center">0.001</td>
+          <td class="center">84</td>
+          <td>Reina 1er orden</td>
+          <td class="sig-yes">Clustering muy significativo</td>
+        </tr>
+        <tr>
+          <td>IDH cantonal</td>
+          <td class="center">0.52</td>
+          <td class="center">+2.10</td>
+          <td class="center">0.040</td>
+          <td class="center">84</td>
+          <td>Reina 1er orden</td>
+          <td class="sig-yes">Clustering significativo</td>
+        </tr>
+        <tr>
+          <td>LST distrital</td>
+          <td class="center">0.61</td>
+          <td class="center">+1.45</td>
+          <td class="center">0.120</td>
+          <td class="center">492</td>
+          <td>Reina 1er orden</td>
+          <td class="sig-no">NO significativo</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="key-idea">
+      <p class="label">Regla de oro</p>
+      <p>Nunca compares el I directamente. Comparas el <strong>p-value y el z-score dentro del mismo contexto</strong> — misma variable, misma matriz W, misma escala de unidades. El I solo cobra significado a través de su distribución bajo H₀, que depende del número de unidades y de la matriz de pesos.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 10. PRÁCTICA ========== -->
+<h2 id="practica"><span class="section-num">10</span>Práctica guiada — Lee el output y concluí</h2>
+
+<p>A continuación, tres outputs reales de la librería <code>esda</code> en Python. Intenta responder antes de revelar la respuesta:</p>
+
+<!-- Output 1 -->
+<div class="practice">
+<pre style="margin-top: 0;"><code>moran_covid = Moran(casos_canton, w, permutations=999)
+print(moran_covid.I, moran_covid.z_norm, moran_covid.p_sim)
+<span class="code-output"># Output: 0.4231   5.847   0.001</span></code></pre>
+  <p class="question">❓ ¿Hay autocorrelación? ¿Positiva o negativa? ¿A qué nivel de confianza?</p>
+  <details>
+    <summary>Mostrar respuesta</summary>
+    <div class="reveal">
+      <strong>Sí, autocorrelación positiva, al 99% de confianza.</strong> Los cantones con muchos casos COVID se agrupan espacialmente. El I = 0.42 indica clustering, el z = 5.85 supera ampliamente el umbral 2.58 (p &lt; 0.01) y el p = 0.001 confirma que rechazamos H₀ con altísima confianza.
+    </div>
+  </details>
+</div>
+
+<!-- Output 2 -->
+<div class="practice">
+<pre style="margin-top: 0;"><code>moran_mort = Moran(tasa_mortalidad, w, permutations=999)
+print(moran_mort.I, moran_mort.z_norm, moran_mort.p_sim)
+<span class="code-output"># Output: 0.0812   1.123   0.189</span></code></pre>
+  <p class="question">❓ ¿Rechazamos H₀? ¿Qué concluimos sobre la mortalidad?</p>
+  <details>
+    <summary>Mostrar respuesta</summary>
+    <div class="reveal">
+      <strong>No rechazamos H₀.</strong> El I = 0.08 es cercano a cero, el z = 1.12 está por debajo del umbral 1.96 y el p = 0.189 supera 0.05. La tasa de mortalidad <em>no muestra patrón espacial significativo</em> a esta escala — su distribución sobre los cantones es compatible con el azar.
+    </div>
+  </details>
+</div>
+
+<!-- Output 3 -->
+<div class="practice">
+<pre style="margin-top: 0;"><code>moran_edad = Moran(edad_promedio, w, permutations=999)
+print(moran_edad.I, moran_edad.z_norm, moran_edad.p_sim)
+<span class="code-output"># Output: -0.1543  -2.210   0.032</span></code></pre>
+  <p class="question">❓ El I es negativo. ¿Qué significa eso? ¿Es significativo?</p>
+  <details>
+    <summary>Mostrar respuesta</summary>
+    <div class="reveal">
+      <strong>Sí es significativo (p &lt; 0.05): patrón disperso.</strong> El z = −2.21 supera en valor absoluto el umbral 1.96 y el p = 0.032. La interpretación geográfica: cantones con edad promedio alta están rodeados por cantones con edad promedio baja, y viceversa. Este tipo de patrón es <em>poco frecuente</em> en fenómenos sociales pero existe; puede surgir, por ejemplo, en territorios donde poblaciones envejecidas y jóvenes están sistemáticamente en cantones contiguos por dinámicas migratorias.
+    </div>
+  </details>
+</div>
+
+<!-- ========== 11. PARA RECORDAR ========== -->
+<h2 id="recordar"><span class="section-num">11</span>Para recordar siempre</h2>
+
+<div class="pocket-rules">
+  <div class="pocket-rule">
+    <div class="icon">📐</div>
+    <div class="title">Z-score = distancia en sigmas</div>
+    <div class="text">Mide qué tan lejos está un resultado del valor esperado bajo H₀. Sirve para una nota, una temperatura o un I de Morán — el lenguaje es universal.</div>
+  </div>
+  <div class="pocket-rule rule-2">
+    <div class="icon">🎲</div>
+    <div class="title">P-value = probabilidad de azar</div>
+    <div class="text">p &lt; 0.05 significa: hay menos del 5% de probabilidad de obtener este resultado <em>si H₀ fuera verdad</em>. No es la probabilidad de que H₀ sea cierta.</div>
+  </div>
+  <div class="pocket-rule rule-3">
+    <div class="icon">🗺️</div>
+    <div class="title">En el I de Morán: H₀ = aleatoriedad espacial</div>
+    <div class="text">Si p &lt; 0.05, el patrón espacial <em>no es azar</em>: hay estructura geográfica. Pero el I global no dice <em>dónde</em> — para eso, los LISA locales.</div>
+  </div>
+  <div class="pocket-rule rule-4">
+    <div class="icon">⚠️</div>
+    <div class="title">p pequeño ≠ efecto grande</div>
+    <div class="text">Un p &lt; 0.001 solo dice "no es azar". La <em>magnitud</em> del patrón la da el valor del I. La <em>ubicación</em> de los clústeres la dan los LISA locales.</div>
+  </div>
+  <div class="pocket-rule">
+    <div class="icon">🧩</div>
+    <div class="title">Lag espacial = promedio del vecindario</div>
+    <div class="text">Wx<sub>i</sub> es el valor promedio de los vecinos de la unidad <em>i</em>. El I de Morán mide la correlación entre el valor propio (x) y el lag (Wx) en todo el territorio.</div>
+  </div>
+</div>
+
+<!-- ========== 12. REFERENCIAS ========== -->
+<h2 id="referencias"><span class="section-num">12</span>Referencias bibliográficas</h2>
+
+<div class="references">
+  <ol>
+    <li>Anselin, L. (1995). Local Indicators of Spatial Association — LISA. <em>Geographical Analysis</em>, 27(2), 93–115.</li>
+
+    <li>Buzai, G. D. (2021). <em>Geografía del COVID-19. Análisis socio-espacial mediante Sistemas de Información Geográfica</em>. Universidad Nacional de Luján, Programa de Estudios Geográficos (PROEG).</li>
+
+    <li>Buzai, G. D., &amp; Montes Galbán, E. (2021). Análisis exploratorio de datos espaciales aplicado a estudios socio-territoriales. <em>Anales de Geografía</em>, Universidad Nacional de Luján.</li>
+
+    <li>Cliff, A. D., &amp; Ord, J. K. (1981). <em>Spatial Processes: Models &amp; Applications</em>. Pion Limited, London.</li>
+
+    <li>Fischer, M. M., &amp; Getis, A. (Eds.). (2010). <em>Handbook of Applied Spatial Analysis: Software Tools, Methods and Applications</em>. Springer-Verlag.</li>
+
+    <li>Fotheringham, A. S., &amp; Rogerson, P. A. (Eds.). (2009). <em>The SAGE Handbook of Spatial Analysis</em>. SAGE Publications.</li>
+
+    <li>Goodchild, M. F. (2009). What problem? Spatial autocorrelation and geographic information science. <em>Geographical Analysis</em>, 41(4), 411–417.</li>
+
+    <li>Levine, N. (2015). <em>CrimeStat IV: A Spatial Statistics Program for the Analysis of Crime Incident Locations</em>. Ned Levine &amp; Associates, Houston, TX, and the National Institute of Justice, Washington, D.C.</li>
+
+    <li>Moran, P. A. P. (1948). The interpretation of statistical maps. <em>Journal of the Royal Statistical Society: Series B (Methodological)</em>, 10(2), 243–251.</li>
+
+    <li>Rey, S. J., Anselin, L., &amp; Li, X. (2015). PySAL: A Python Library of Spatial Analytical Methods. <em>Review of Regional Studies</em>, 37(1), 5–27.</li>
+
+    <li>Rogerson, P. A., &amp; Yamada, I. (2009). <em>Statistical Detection and Surveillance of Geographic Clusters</em>. CRC Press, Taylor &amp; Francis Group.</li>
+
+    <li>Siabato, W., &amp; Guzmán-Manrique, J. (2019). La autocorrelación espacial y el desarrollo de la geografía cuantitativa. <em>Cuadernos de Geografía: Revista Colombiana de Geografía</em>, 28(1), 1–22.</li>
+
+    <li>Slocum, T. A., McMaster, R. B., Kessler, F. C., &amp; Howard, H. H. (2022). <em>Thematic Cartography and Geovisualization</em> (4th ed.). CRC Press.</li>
+
+    <li>Thony Schnurer, M. (2018). Autocorrelación espacial: índices para determinar su presencia en datos geográficos. Una breve revisión de la literatura. <em>Universidad Verdad</em>, 78, 47–60.</li>
+
+    <li>Wilson, J. P., &amp; Fotheringham, A. S. (Eds.). (2008). <em>The Handbook of Geographic Information Science</em>. Wiley-Blackwell.</li>
+
+    <li>Yang, J., Jin, S., Xiao, X., Jin, C., Xia, J., Li, X., &amp; Wang, S. (2019). Local climate zone ventilation and urban land surface temperatures: Towards a performance-based and wind-sensitive planning proposal in megacities. <em>Sustainable Cities and Society</em>, 47, 101487.</li>
+
+  </ol>
+</div>
+
+<footer>
+  <p>Material preparado para el curso GF-0624 · Cartografía Multivariada y Geovisualización<br>
+  Universidad de Costa Rica · Escuela de Geografía</p>
+</footer>
+
+</body>
+</html>
