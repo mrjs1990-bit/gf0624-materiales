@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Su póster en 5 pasos — Sesión de Pósters 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crema:#FAF8F4;
+    --tinta:#2E2A26;
+    --texto:#54504A;
+    --rojo:#A93B3B;
+    --rojo-oscuro:#7E2B2B;
+    --linea:#E6DED4;
+    --tarjeta:#FFFFFF;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--crema);
+    font-family:'Lora',Georgia,serif;
+    color:var(--texto);
+    padding:1.8rem 1rem 2.2rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .marco{max-width:760px;margin:0 auto}
+
+  .encabezado{text-align:center;margin-bottom:1.6rem}
+  .encabezado .kicker{
+    font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--rojo);font-weight:600;
+  }
+  .encabezado h1{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:clamp(1.45rem,4.5vw,2rem);
+    color:var(--tinta);margin:.4rem 0 .55rem;font-weight:700;
+  }
+  .encabezado .regla{width:56px;height:3px;background:var(--rojo);margin:0 auto;border-radius:2px}
+
+  /* Stepper */
+  .pasos{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    position:relative;margin:0 auto 1.4rem;max-width:640px;
+  }
+  .pasos::before{
+    content:"";position:absolute;top:24px;left:9%;right:9%;
+    height:2px;background:var(--linea);z-index:0;
+  }
+  .paso{
+    background:none;border:none;cursor:pointer;font-family:inherit;
+    display:flex;flex-direction:column;align-items:center;gap:.45rem;
+    position:relative;z-index:1;width:19%;
+  }
+  .paso:focus-visible{outline:3px solid var(--rojo);outline-offset:3px;border-radius:8px}
+  .circulo{
+    width:48px;height:48px;border-radius:50%;
+    background:var(--tarjeta);border:2px solid var(--linea);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:1.25rem;font-weight:700;color:var(--rojo);
+    transition:all .25s ease;
+  }
+  .paso:hover .circulo{border-color:var(--rojo)}
+  .paso.activo .circulo{
+    background:var(--rojo);border-color:var(--rojo);color:#fff;
+    box-shadow:0 6px 16px rgba(169,59,59,.30);
+    transform:scale(1.08);
+  }
+  .etiqueta{
+    font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--texto);font-weight:600;text-align:center;line-height:1.25;
+  }
+  .paso.activo .etiqueta{color:var(--rojo-oscuro)}
+
+  /* Tarjeta de contenido */
+  .contenido{
+    background:var(--tarjeta);
+    border:1px solid var(--linea);
+    border-radius:10px;
+    padding:1.4rem 1.5rem 1.5rem;
+    box-shadow:0 8px 26px rgba(46,42,38,.06);
+    min-height:190px;
+  }
+  .contenido .num{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--rojo);font-weight:600;
+  }
+  .contenido h2{
+    font-family:'Playfair Display',Georgia,serif;
+    font-size:clamp(1.15rem,3vw,1.45rem);
+    color:var(--tinta);margin:.3rem 0 .8rem;font-weight:700;
+  }
+  .contenido ul{list-style:none}
+  .contenido li{
+    position:relative;padding-left:1.25rem;
+    font-size:.96rem;line-height:1.65;margin-bottom:.55rem;
+  }
+  .contenido li::before{
+    content:"";position:absolute;left:0;top:.62em;
+    width:7px;height:7px;background:var(--rojo);border-radius:2px;
+  }
+  .panel{display:none;animation:aparecer .35s ease}
+  .panel.visible{display:block}
+  @keyframes aparecer{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .nav{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-top:1rem;max-width:760px;
+  }
+  .nav button{
+    background:none;border:1px solid var(--linea);border-radius:999px;
+    font-family:'Lora',serif;font-size:.85rem;color:var(--rojo-oscuro);
+    padding:.45rem 1.1rem;cursor:pointer;transition:all .2s ease;
+  }
+  .nav button:hover:not(:disabled){border-color:var(--rojo);background:rgba(169,59,59,.05)}
+  .nav button:disabled{opacity:.35;cursor:default}
+  .nav .progreso{font-size:.8rem;font-style:italic;color:#9A938A}
+
+  @media (max-width:480px){
+    .circulo{width:38px;height:38px;font-size:1.05rem}
+    .pasos::before{top:19px}
+    .etiqueta{font-size:.6rem}
+    .contenido{padding:1.1rem 1.05rem 1.2rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .circulo,.nav button{transition:none}
+    .panel{animation:none}
+  }
+</style>
+</head>
+<body>
+<div class="marco">
+
+  <header class="encabezado">
+    <div class="kicker">De la idea a la pared</div>
+    <h1>Tu póster en 5 pasos</h1>
+    <div class="regla"></div>
+  </header>
+
+  <nav class="pasos" aria-label="Pasos para crear el póster">
+    <button class="paso activo" data-i="0" aria-current="step">
+      <span class="circulo">1</span><span class="etiqueta">Preparar</span>
+    </button>
+    <button class="paso" data-i="1">
+      <span class="circulo">2</span><span class="etiqueta">Organizar</span>
+    </button>
+    <button class="paso" data-i="2">
+      <span class="circulo">3</span><span class="etiqueta">Diseñar para impactar</span>
+    </button>
+    <button class="paso" data-i="3">
+      <span class="circulo">4</span><span class="etiqueta">Crear</span>
+    </button>
+    <button class="paso" data-i="4">
+      <span class="circulo">5</span><span class="etiqueta">Imprimir</span>
+    </button>
+  </nav>
+
+  <div class="contenido">
+    <div class="panel visible">
+      <div class="num">Paso 1</div>
+      <h2>Preparar</h2>
+      <ul>
+        <li>¿Cuál es el hallazgo más importante o interesante de tu iniciativa?</li>
+        <li>Pensá en tu audiencia: colegas de los cuatro departamentos de la División.</li>
+        <li>Revisá los requisitos de la plantilla oficial (tamaño y formato).</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="num">Paso 2</div>
+      <h2>Organizar</h2>
+      <ul>
+        <li>Organizá tu información en las secciones típicas: introducción, metodología, resultados y conclusiones.</li>
+        <li>Sé breve y conciso: esto no es un artículo científico ni un informe.</li>
+        <li>Definí un elemento focal — la figura, cifra o frase que resuma tu trabajo.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="num">Paso 3</div>
+      <h2>Diseñar para impactar</h2>
+      <ul>
+        <li>¿Cómo podés comunicar visualmente tu iniciativa? Usá gráficos, figuras, diagramas e imágenes en lugar de bloques de texto.</li>
+        <li>Usá frases cortas como encabezados que transmitan la información clave.</li>
+        <li>Dejá espacio en blanco: un póster saturado es difícil de leer.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="num">Paso 4</div>
+      <h2>Crear</h2>
+      <ul>
+        <li>Usá la plantilla oficial que te compartiremos al registrar tu iniciativa.</li>
+        <li>Podés trabajarla en PowerPoint: mantené las tipografías y colores consistentes.</li>
+        <li>Cuidá la resolución de las imágenes — las de la web pueden pixelarse al ampliarse.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="num">Paso 5</div>
+      <h2>Imprimir</h2>
+      <ul>
+        <li>Imprimí primero una versión en una sola página para revisar el texto.</li>
+        <li>Pedí retroalimentación a una persona colega antes de la versión final.</li>
+        <li>Guardá en PDF para la impresión y coordiná los detalles con la organización.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button id="ant" disabled>← Anterior</button>
+    <span class="progreso" id="prog">Paso 1 de 5</span>
+    <button id="sig">Siguiente →</button>
+  </div>
+
+</div>
+
+<script>
+  const pasos = Array.from(document.querySelectorAll('.paso'));
+  const paneles = Array.from(document.querySelectorAll('.panel'));
+  const ant = document.getElementById('ant');
+  const sig = document.getElementById('sig');
+  const prog = document.getElementById('prog');
+  let actual = 0;
+
+  function mostrar(i){
+    actual = i;
+    pasos.forEach((p,k)=>{
+      p.classList.toggle('activo', k===i);
+      if(k===i){ p.setAttribute('aria-current','step'); }
+      else{ p.removeAttribute('aria-current'); }
+    });
+    paneles.forEach((p,k)=>p.classList.toggle('visible', k===i));
+    ant.disabled = i===0;
+    sig.disabled = i===paneles.length-1;
+    prog.textContent = 'Paso ' + (i+1) + ' de ' + paneles.length;
+  }
+
+  pasos.forEach(p=>p.addEventListener('click',()=>mostrar(+p.dataset.i)));
+  ant.addEventListener('click',()=>mostrar(Math.max(0,actual-1)));
+  sig.addEventListener('click',()=>mostrar(Math.min(paneles.length-1,actual+1)));
+</script>
+</body>
+</html>
