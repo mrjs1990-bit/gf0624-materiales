@@ -1,0 +1,402 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>GF0662 Puntos de referencia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&family=Nunito+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: una sola columna de lectura; cada paso = texto + celda de código con botón Copiar. */
+:root {
+  --bg: #EEF1E8;
+  --surface: #FAFBF7;
+  --fg: #26332B;
+  --muted: #55655A;
+  --border: #D3DAC9;
+  --ink: #13251C;
+  --accent: #A64A07;
+  --ok: #3F6B00;
+  --ok-bg: #E4EDD0;
+  --warn-bg: #F6E3CF;
+  --info-bg: #E1E9EE;
+  --info: #24506B;
+  --code-bg: #13251C;
+  --code-fg: #E8EEE3;
+  --code-comment: #8FA597;
+  --code-string: #F0A35E;
+  --code-keyword: #9BD13F;
+  --code-number: #9CC5E8;
+  --code-bar: #1D3328;
+  --font-head: 'Rubik', system-ui, sans-serif;
+  --font-body: 'Nunito Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1913; --surface: #16251D; --fg: #DDE6DA; --muted: #9DB0A3; --border: #2A3C31;
+    --ink: #EAF1E6; --accent: #F0A35E; --ok: #9BD13F; --ok-bg: #213418; --warn-bg: #3A2713;
+    --info-bg: #1B2E3A; --info: #9CC5E8; --code-bg: #0A120D; --code-bar: #14231A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1913; --surface: #16251D; --fg: #DDE6DA; --muted: #9DB0A3; --border: #2A3C31;
+  --ink: #EAF1E6; --accent: #F0A35E; --ok: #9BD13F; --ok-bg: #213418; --warn-bg: #3A2713;
+  --info-bg: #1B2E3A; --info: #9CC5E8; --code-bg: #0A120D; --code-bar: #14231A;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 18px; line-height: 1.6; padding-inline: 20px; padding-block: 0 80px; }
+.wrap { max-width: 880px; margin-inline: auto; display: flex; flex-direction: column; gap: 40px; }
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--border); margin-inline: -20px; padding: 10px 20px; }
+.topbar-in { max-width: 880px; margin-inline: auto; display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+.topbar b { font-family: var(--font-head); font-weight: 600; color: var(--ink); font-size: 16px; }
+h1, h2, h3 { font-family: var(--font-head); color: var(--ink); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: clamp(34px, 6vw, 52px); font-weight: 600; }
+h2 { font-size: clamp(26px, 4vw, 32px); font-weight: 600; }
+h3 { font-size: 20px; font-weight: 600; }
+p { margin: 0; max-width: 68ch; }
+.eyebrow { font-family: var(--font-mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+header.hero { padding-top: 40px; display: flex; flex-direction: column; gap: 16px; }
+.lead { font-size: 21px; color: var(--muted); }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 15px; color: var(--muted); }
+.meta span b { color: var(--fg); }
+.step { display: flex; flex-direction: column; gap: 16px; padding-top: 8px; }
+.step-head { display: flex; flex-direction: column; gap: 6px; }
+.step ul, .step ol { margin: 0; padding-left: 1.3em; display: flex; flex-direction: column; gap: 6px; max-width: 68ch; }
+code.i { font-family: var(--font-mono); font-size: .86em; background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; }
+.box { border-radius: 8px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; font-size: 17px; }
+.box b.t { font-family: var(--font-head); font-weight: 600; font-size: 14px; letter-spacing: .06em; text-transform: uppercase; }
+.box.check { background: var(--ok-bg); } .box.check b.t { color: var(--ok); }
+.box.think { background: var(--info-bg); } .box.think b.t { color: var(--info); }
+.box.warn { background: var(--warn-bg); } .box.warn b.t { color: var(--accent); }
+.box ul { margin: 0; padding-left: 1.2em; }
+.cell { border-radius: 10px; overflow: hidden; background: var(--code-bg); border: 1px solid var(--border); }
+.cell-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; background: var(--code-bar); color: var(--code-comment); font-family: var(--font-mono); font-size: 13px; padding: 8px 8px 8px 16px; }
+.cell-bar span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cell pre { margin: 0; padding: 16px; overflow-x: auto; color: var(--code-fg); font-family: var(--font-mono); font-size: 14px; line-height: 1.6; tab-size: 2; }
+.cell pre code { font-family: inherit; }
+.tk-c { color: var(--code-comment); } .tk-s { color: var(--code-string); } .tk-k { color: var(--code-keyword); } .tk-n { color: var(--code-number); }
+button.copy { font-family: var(--font-head); font-weight: 500; font-size: 14px; border-radius: 6px; padding: 6px 14px; border: 1px solid var(--border); background: var(--surface); color: var(--ink); cursor: pointer; }
+.cell button.copy { background: transparent; border-color: #3E5A4A; color: var(--code-fg); }
+button.copy:hover { border-color: var(--accent); }
+button.copy:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+button.copy.done { background: var(--ok); color: #fff; border-color: var(--ok); }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 16px; min-width: 520px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { font-family: var(--font-head); font-weight: 500; color: var(--muted); font-size: 14px; letter-spacing: .04em; text-transform: uppercase; }
+.sw { display: inline-block; width: 14px; height: 14px; border-radius: 3px; margin-right: 8px; vertical-align: -2px; border: 1px solid var(--border); }
+details { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 16px; }
+details summary { cursor: pointer; font-weight: 700; }
+details[open] summary { margin-bottom: 8px; }
+details > div { display: flex; flex-direction: column; gap: 8px; font-size: 17px; }
+.src { display: none; }
+hr { border: 0; border-top: 1px solid var(--border); width: 100%; margin: 0; }
+.exp { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.exp > div { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; font-size: 16.5px; }
+
+details.bd { background: var(--surface); }
+details.bd summary { font-family: var(--font-head); font-weight: 600; color: var(--ink); }
+details.bd dl { margin: 0; display: flex; flex-direction: column; }
+details.bd dl > div { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 6px 20px; padding: 10px 0; border-top: 1px solid var(--border); }
+details.bd dt code { font-family: var(--font-mono); font-size: 13px; color: var(--accent); word-break: break-word; }
+details.bd dd { margin: 0; font-size: 16.5px; line-height: 1.55; }
+@media (max-width: 700px) { details.bd dl > div { grid-template-columns: 1fr; } }
+.shot { width: 100%; height: auto; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+footer { color: var(--muted); font-size: 15px; }
+@media (max-width: 520px) { body { font-size: 17px; } }
+
+.step .flow { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; max-width: none; }
+.flow li { flex: 1 1 190px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 15.5px; line-height: 1.4; display: flex; flex-direction: column; gap: 2px; }
+.flow li b { font-family: var(--font-head); font-weight: 600; color: var(--ink); }
+.flow li span { color: var(--muted); }
+.flow li.now { background: var(--ok-bg); border-color: var(--ok); }
+.flow li.now span.tag { color: var(--ok); font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.step .todo { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; max-width: 68ch; }
+.todo label { display: flex; gap: 12px; align-items: flex-start; cursor: pointer; }
+.todo input { width: 20px; height: 20px; margin-top: 4px; flex: none; accent-color: var(--ok); }
+.todo input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.todo input:checked + span { color: var(--muted); text-decoration: line-through; }
+.out { background: var(--code-bg); color: var(--code-fg); border-radius: 8px; padding: 14px 16px; font-family: var(--font-mono); font-size: 14px; line-height: 1.7; overflow-x: auto; white-space: pre; }
+.out .tk-c { color: var(--code-comment); }
+</style>
+
+<div class="topbar"><div class="topbar-in"><b>GF0662 · Parte 1 · Puntos de referencia</b><button class="copy" id="copyAll" type="button">Copiar todo el código</button></div></div>
+
+<div class="wrap">
+
+<header class="hero">
+  <span class="eyebrow">GF0662 Teledetección · UCR · II ciclo 2026</span>
+  <h1>Puntos de referencia</h1>
+  <p class="lead">Hoy cada uno marca en el mapa sitios donde saben qué hay en el terreno y los guarda como un archivo propio. Con esos puntos, la próxima semana, el grupo entrena el clasificador.</p>
+  <div class="meta">
+    <span><b>Parte:</b> 1 de 3</span>
+    <span><b>Herramienta:</b> Google Earth Engine Code Editor</span>
+    <span><b>Datos:</b> Sentinel-2 SR, 2019–2020</span>
+    <span><b>Entregan:</b> un asset <code class="i">puntos_E1</code>, <code class="i">E2</code> o <code class="i">E3</code></span>
+  </div>
+</header>
+
+<section class="step" id="flujo">
+  <div class="step-head"><span class="eyebrow">Dónde estamos</span><h2>Primer paso del flujo de trabajo</h2></div>
+  <p>La clasificación se hace en etapas. Cada semana tiene su código y cada código guarda un resultado que usa el siguiente.</p>
+  <ol class="flow">
+    <li class="now"><span class="tag">Hoy</span><b>1 · Recolectar puntos</b><span>Marcar sitios de cada clase y exportarlos.</span></li>
+    <li><b>2 · Unir y separar</b><span>Juntar los puntos del grupo, quitar repetidos y apartar el 20 % para validar.</span></li>
+    <li><b>3 · Entrenar y validar</b><span>Random Forest con bandas e índices, matriz de error y mapa.</span></li>
+  </ol>
+  <div class="box think"><b class="t">Por qué empezar por los puntos</b><p>El clasificador solo aprende lo que le enseñen los puntos. Si un punto de pastos está sobre un cultivo, el algoritmo lo va a aprender mal, y ningún ajuste posterior lo corrige. Hoy el cuidado importa más que la velocidad.</p></div>
+</section>
+
+<hr>
+
+<section class="step" id="antes">
+  <div class="step-head"><span class="eyebrow">Antes de empezar</span><h2>Lo que necesitan tener listo</h2></div>
+  <ul class="todo">
+    <li><label><input type="checkbox" id="chk-a"><span>Acuerden en el grupo quién es <b>E1</b>, quién <b>E2</b> y quién <b>E3</b>. No se repiten.</span></label></li>
+    <li><label><input type="checkbox" id="chk-b"><span>En el panel <i>Assets</i> del Code Editor, creen la carpeta <code class="i">clasificacion_s2</code> (<i>NEW → Folder</i>). Si no existe, la exportación falla.</span></label></li>
+    <li><label><input type="checkbox" id="chk-c"><span>Tengan a mano la ruta de sus Assets: <code class="i">projects/SU_PROYECTO/assets/...</code></span></label></li>
+    <li><label><input type="checkbox" id="chk-d"><span>Tengan el polígono <code class="i">geometry</code> de la zona de estudio. Es <b>el mismo para todo el grupo</b>.</span></label></li>
+    <li><label><input type="checkbox" id="chk-e"><span>Creen un script nuevo y llámenlo, por ejemplo, <code class="i">Codigo1_Puntos_E1</code>.</span></label></li>
+  </ul>
+  <div class="box warn"><b class="t">Cómo avanzar</b><p>Cada celda de código se pega <b>debajo</b> de la anterior y se corre con <i>Run</i> antes de seguir. Las celdas dependen unas de otras. Si algo falla, lean la consola en ese mismo paso.</p></div>
+</section>
+
+<hr>
+
+<section class="step" id="p1">
+  <div class="step-head"><span class="eyebrow">Paso 1</span><h2>Parámetros</h2></div>
+  <p>La primera celda dice quiénes son, qué período usan y dónde guardan el resultado. Es la única que tienen que editar.</p>
+  <div class="box check"><b class="t">Lo que tienen que cambiar</b><ul><li><code class="i">estudiante</code>: <code class="i">'E1'</code>, <code class="i">'E2'</code> o <code class="i">'E3'</code>.</li><li><code class="i">carpeta</code>: reemplacen <code class="i">SU_PROYECTO</code> por su proyecto.</li></ul></div>
+  <script type="text/plain" class="src" data-name="codigo1_a_parametros.js">
+/* CÓDIGO 1 — Puntos de referencia individuales.
+Imports (nombrarlos exactamente así):
+  geometry → Polygon con la zona de estudio
+  suelo    → puntos de suelo descubierto   (clase 0)
+  bosque   → puntos de bosque              (clase 1)
+  cultivos → puntos de cultivos            (clase 2)
+  pastos   → puntos de pastos              (clase 3)
+Los códigos de clase son los mismos en los CÓDIGOS 2 y 3: no cambiarlos. */
+
+var estudiante = 'E1'; // Cambiar a E2 o E3.
+var inicio = '2019-01-01', fin = '2021-01-01';
+// La carpeta de assets debe existir antes de lanzar la tarea (Assets > New > Folder).
+var carpeta = 'projects/SU_PROYECTO/assets/clasificacion_s2';
+var zona = geometry;
+var bandas = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B8A', 'B11', 'B12'];
+</script>
+  <details class="bd" open><summary>Qué hace cada línea</summary><div><dl><div><dt><code>var estudiante = &#x27;E1&#x27;;</code></dt><dd>Su identificador dentro del grupo. Cambien <code class="i">E1</code> por <code class="i">E2</code> o <code class="i">E3</code> según les toque. Cada punto que exporten lleva esta etiqueta, así sabemos quién lo aportó.</dd></div><div><dt><code>var inicio = &#x27;2019-01-01&#x27;, fin = &#x27;2021-01-01&#x27;;</code></dt><dd>Período del que se arma la imagen. <b>No lo cambien</b>: todo el grupo tiene que usar las mismas fechas, porque el código de la próxima semana compara los períodos de los tres.</dd></div><div><dt><code>var carpeta = &#x27;projects/SU_PROYECTO/assets/...&#x27;;</code></dt><dd>Ruta de la carpeta de Assets donde se guarda su archivo de puntos. Reemplacen <code class="i">SU_PROYECTO</code> por el nombre de su proyecto de Google Cloud, tal como lo ven en la ruta de sus Assets.</dd></div><div><dt><code>var zona = geometry;</code></dt><dd>Le damos un nombre corto al polígono de la zona de estudio. De aquí en adelante usamos <code class="i">zona</code>.</dd></div><div><dt><code>var bandas = [&#x27;B2&#x27;, &#x27;B3&#x27;, ... &#x27;B12&#x27;];</code></dt><dd>Las diez bandas de Sentinel-2 que vamos a usar. B2 es azul, B3 verde, B4 rojo, B5 a B7 el borde del rojo, B8 y B8A infrarrojo cercano, B11 y B12 infrarrojo de onda corta.</dd></div></dl></div></details>
+</section>
+
+<section class="step" id="p2">
+  <div class="step-head"><span class="eyebrow">Paso 2</span><h2>Imagen de referencia sin nubes</h2></div>
+  <p>Para decidir qué hay en cada lugar necesitan una imagen limpia del mismo período con el que se va a clasificar. Esta celda arma un compuesto de mediana de Sentinel-2 y lo agrega al mapa.</p>
+  <script type="text/plain" class="src" data-name="codigo1_b_compuesto.js">
+function prepararS2(img) {
+  var scl = img.select('SCL');
+  var mascara = scl.neq(1).and(scl.neq(3)).and(scl.neq(8))
+    .and(scl.neq(9)).and(scl.neq(10)).and(scl.neq(11));
+  return img.select(bandas).updateMask(mascara).divide(10000)
+    .copyProperties(img, ['system:time_start']);
+}
+var coleccion = ee.ImageCollection('COPERNICUS/S2_SR_HARMONIZED')
+  .filterBounds(zona).filterDate(inicio, fin)
+  .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 60)).map(prepararS2);
+var compuesto = coleccion.median().clip(zona);
+
+Map.setOptions('satellite');
+Map.centerObject(zona, 12);
+Map.addLayer(compuesto, {bands: ['B4', 'B3', 'B2'], min: 0, max: 0.3}, 'RGB');
+Map.addLayer(compuesto, {bands: ['B8', 'B4', 'B3'], min: 0, max: 0.4}, 'Falso color', false);
+Map.addLayer(compuesto, {bands: ['B11', 'B8', 'B4'], min: 0, max: 0.4}, 'SWIR-NIR-Rojo', false);
+print('Imágenes disponibles', coleccion.size());
+</script>
+  <details class="bd" open><summary>Qué hace cada línea</summary><div><dl><div><dt><code>function prepararS2(img) {</code></dt><dd>Define una función: una receta que se aplica a cada imagen de la colección, una por una.</dd></div><div><dt><code>var scl = img.select(&#x27;SCL&#x27;);</code></dt><dd>Toma la banda <i>Scene Classification Layer</i>, que ya trae la etiqueta de cada píxel (nube, sombra, agua, vegetación...).</dd></div><div><dt><code>var mascara = scl.neq(1).and(scl.neq(3))...</code></dt><dd><code class="i">neq</code> quiere decir «distinto de». Se descartan los píxeles saturados (1), sombra de nube (3), nube de probabilidad media y alta (8 y 9), cirros (10) y nieve (11). El <code class="i">and</code> junta las condiciones: el píxel cuenta solo si cumple todas.</dd></div><div><dt><code>img.select(bandas).updateMask(mascara).divide(10000)</code></dt><dd>Se queda con las diez bandas, aplica la máscara y divide entre 10 000 para pasar a reflectancia entre 0 y 1. Sentinel-2 guarda los valores multiplicados por 10 000.</dd></div><div><dt><code>.copyProperties(img, [&#x27;system:time_start&#x27;])</code></dt><dd>Conserva la fecha de la imagen, que se pierde al transformarla.</dd></div><div><dt><code>ee.ImageCollection(&#x27;COPERNICUS/S2_SR_HARMONIZED&#x27;)</code></dt><dd>La colección de Sentinel-2 con reflectancia de superficie (nivel 2A). «Harmonized» significa que los valores son comparables antes y después del cambio de procesamiento de 2022.</dd></div><div><dt><code>.filterBounds(zona).filterDate(inicio, fin)</code></dt><dd>Se queda con las imágenes que tocan su zona y caen dentro del período.</dd></div><div><dt><code>.filter(ee.Filter.lt(&#x27;CLOUDY_PIXEL_PERCENTAGE&#x27;, 60))</code></dt><dd>Descarta las escenas con 60 % o más de nubes. <code class="i">lt</code> es «menor que».</dd></div><div><dt><code>.map(prepararS2)</code></dt><dd>Aplica la receta a cada imagen que quedó.</dd></div><div><dt><code>coleccion.median().clip(zona)</code></dt><dd>Calcula la mediana de cada píxel a lo largo de todas las fechas. Así se obtiene una sola imagen casi sin nubes. <code class="i">clip</code> la recorta a su polígono.</dd></div><div><dt><code>Map.addLayer(compuesto, {bands: [...]...}, &#x27;RGB&#x27;)</code></dt><dd>Agrega la imagen al mapa en tres combinaciones: color natural (B4, B3, B2), falso color (B8, B4, B3) y SWIR-NIR-rojo (B11, B8, B4). Las dos últimas empiezan apagadas (<code class="i">false</code>) y las prenden en el panel Layers. Úsenlas para decidir qué es cada lugar.</dd></div><div><dt><code>print(&#x27;Imágenes disponibles&#x27;, coleccion.size());</code></dt><dd>Escribe en la consola cuántas imágenes entraron al compuesto. Si da 0, algo está mal con la zona o las fechas.</dd></div></dl></div></details>
+  <div class="box check"><b class="t">Qué deben ver al correr</b>
+    <p>En la consola, un número en <i>Imágenes disponibles</i> mayor que 0. En el mapa, la zona en color natural. En el panel <i>Layers</i>, tres capas de imagen.</p>
+  </div>
+  <details><summary>Si Imágenes disponibles da 0</summary><div><p>Revisen que <code class="i">geometry</code> exista en los imports y que sea un polígono que cae sobre la zona. También que <code class="i">inicio</code> y <code class="i">fin</code> estén escritos como en la celda original.</p></div></details>
+</section>
+
+<hr>
+
+<section class="step" id="p3">
+  <div class="step-head"><span class="eyebrow">Paso 3</span><h2>Marcar los puntos</h2></div>
+  <p>Este paso no usa código, usa las herramientas de dibujo del mapa. Van a crear <b>cuatro capas de puntos</b>, una por clase. El nombre de cada capa tiene que ser exactamente el de la tabla.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Nombre del import</th><th>Clase</th><th>Código</th><th>Qué marcar</th></tr>
+    <tr><td><code class="i">suelo</code></td><td><span class="sw" style="background:#cae290"></span>Suelo descubierto</td><td>0</td><td>Terreno sin cobertura: suelo expuesto, caminos de tierra, bancos de arena.</td></tr>
+    <tr><td><code class="i">bosque</code></td><td><span class="sw" style="background:#589400"></span>Bosque</td><td>1</td><td>Dosel arbóreo continuo y denso.</td></tr>
+    <tr><td><code class="i">cultivos</code></td><td><span class="sw" style="background:#E0A100"></span>Cultivos</td><td>2</td><td>Parcelas agrícolas con límites regulares, como caña, arroz o melón.</td></tr>
+    <tr><td><code class="i">pastos</code></td><td><span class="sw" style="background:#D0741E"></span>Pastos</td><td>3</td><td>Potreros y pasto con poco o ningún árbol.</td></tr>
+  </table></div>
+
+  <h3>Cómo crear cada capa</h3>
+  <ol>
+    <li>En la esquina superior izquierda del mapa, abran las herramientas de dibujo y presionen <b>+ new layer</b>. Al lado de la capa, la rueda de configuración abre sus opciones.</li>
+    <li>Cambien el <b>nombre</b> al de la tabla, por ejemplo <code class="i">bosque</code>. Todo en minúscula y sin tildes.</li>
+    <li>En <b>Import as</b> elijan <b>FeatureCollection</b>. Si queda como <i>Geometry</i>, el código de más adelante falla.</li>
+    <li>Con el ícono de marcador, hagan clic en el mapa para agregar puntos. Cuando terminen una clase, creen la capa de la siguiente.</li>
+  </ol>
+
+  <h3>Cómo escoger bien un punto</h3>
+  <ul>
+    <li><b>Un punto debe caer en un lugar parejo.</b> El píxel de Sentinel-2 mide 10 a 20 m. Si el punto está en el borde de un cultivo con un potrero, el píxel mezcla dos clases.</li>
+    <li><b>Alejen los puntos de los bordes</b> y de las zonas de transición.</li>
+    <li><b>Repártanlos por toda la zona.</b> Veinte puntos en un solo potrero enseñan un solo tipo de pasto.</li>
+    <li><b>Confirmen con más de una vista.</b> Alternen entre color natural, falso color y SWIR-NIR-rojo. En falso color la vegetación sana se ve en rojo intenso.</li>
+    <li><b>Tengan cuidado con la fecha.</b> La imagen de fondo del mapa puede ser de otro año. La referencia es el compuesto 2019–2020. Eviten sitios que cambiaron en esos años.</li>
+    <li><b>Cuando dudan, no marquen.</b> Un punto dudoso hace más daño que uno que falta.</li>
+  </ul>
+  <div class="box think"><b class="t">Cuántos</b><p>Marquen como mínimo <b>10 puntos por clase</b> y, si pueden, 15. La próxima semana se aparta el 20 % para validar, y con pocos puntos esa parte queda casi vacía.</p></div>
+  <details><summary>Preguntas para pensar antes de marcar</summary><div><p>¿Qué clase les va a costar más? ¿Dónde se confunden en la imagen suelo descubierto y pastos secos? ¿Y cultivos con pastos? Anoten un lugar donde dudaron: lo vamos a retomar cuando veamos la confusión espectral.</p></div></details>
+</section>
+
+<hr>
+
+<section class="step" id="p4">
+  <div class="step-head"><span class="eyebrow">Paso 4</span><h2>Etiquetar y exportar</h2></div>
+  <p>Con las cuatro capas listas, esta celda les agrega la clase, su nombre, el identificador y el período, junta todo en una colección y crea la tarea de exportación.</p>
+  <script type="text/plain" class="src" data-name="codigo1_c_etiquetar_exportar.js">
+function etiquetar(fc, clase, nombre) {
+  return fc.map(function(f) {
+    var xy = f.geometry().transform('EPSG:4326', 1).coordinates();
+    var sitio = ee.Number(xy.get(0)).format('%.7f').cat('_')
+      .cat(ee.Number(xy.get(1)).format('%.7f'));
+    return ee.Feature(f.geometry(), {
+      landcover: clase, clase_nombre: nombre, estudiante: estudiante,
+      sitio_id: sitio, muestra_id: ee.String(estudiante).cat('_').cat(sitio),
+      inicio: inicio, fin: fin
+    });
+  });
+}
+var todos = etiquetar(suelo, 0, 'suelo')
+  .merge(etiquetar(bosque, 1, 'bosque'))
+  .merge(etiquetar(cultivos, 2, 'cultivos'))
+  .merge(etiquetar(pastos, 3, 'pastos'));
+var puntos = todos.filterBounds(zona);
+
+print('Puntos dibujados', todos.size());
+print('Puntos dentro de la zona (los de fuera se descartan)', puntos.size());
+print('Puntos por clase (0 suelo, 1 bosque, 2 cultivos, 3 pastos)',
+  puntos.aggregate_histogram('landcover'));
+Map.addLayer(puntos, {color: 'yellow'}, 'Puntos de referencia');
+
+Export.table.toAsset({
+  collection: puntos, description: 'puntos_' + estudiante,
+  assetId: carpeta + '/puntos_' + estudiante
+});
+/* Resultado: un asset puntos_E1, puntos_E2 o puntos_E3 con geometría, clase,
+autor, identificador y período. Todavía no tiene valores espectrales ni está
+dividido en entrenamiento y validación.
+Después de ejecutar: pestaña Tasks > Run y esperar a que termine. Compartir la
+ruta del asset y dar permiso de lectura al grupo. */
+</script>
+  <details class="bd" open><summary>Qué hace cada línea</summary><div><dl><div><dt><code>function etiquetar(fc, clase, nombre) {</code></dt><dd>Función que recibe una colección de puntos y le agrega los atributos que necesitamos.</dd></div><div><dt><code>f.geometry().transform(&#x27;EPSG:4326&#x27;, 1).coordinates()</code></dt><dd>Saca la longitud y la latitud del punto como una lista de dos números.</dd></div><div><dt><code>var sitio = ee.Number(xy.get(0)).format(&#x27;%.7f&#x27;)...</code></dt><dd>Con esas dos coordenadas arma un texto, por ejemplo <code class="i">-85.1234567_10.1234567</code>. Es el identificador del lugar. Dos puntos en el mismo lugar tendrán el mismo identificador.</dd></div><div><dt><code>return ee.Feature(f.geometry(), {...});</code></dt><dd>Crea el punto de nuevo con sus atributos: <code class="i">landcover</code> (el código de la clase), <code class="i">clase_nombre</code>, <code class="i">estudiante</code>, <code class="i">sitio_id</code>, <code class="i">muestra_id</code> (estudiante más sitio), <code class="i">inicio</code> y <code class="i">fin</code>.</dd></div><div><dt><code>etiquetar(suelo, 0, &#x27;suelo&#x27;).merge(...)</code></dt><dd>Etiqueta cada una de sus cuatro colecciones con su código y las junta en una sola. Los códigos son 0 suelo, 1 bosque, 2 cultivos y 3 pastos. <b>No los cambien</b>: los códigos de las próximas semanas dependen de ellos.</dd></div><div><dt><code>var puntos = todos.filterBounds(zona);</code></dt><dd>Descarta los puntos que quedaron fuera del polígono.</dd></div><div><dt><code>print(&#x27;Puntos dibujados&#x27;, todos.size());</code></dt><dd>Muestra en la consola cuántos puntos dibujaron y cuántos quedaron dentro de la zona. Si los números no coinciden, hay puntos afuera.</dd></div><div><dt><code>puntos.aggregate_histogram(&#x27;landcover&#x27;)</code></dt><dd>Cuenta los puntos por clase. Es la forma más rápida de ver si le falta alguna clase o si una tiene muy pocos.</dd></div><div><dt><code>Map.addLayer(puntos, {color: &#x27;yellow&#x27;}, ...)</code></dt><dd>Dibuja en amarillo los puntos que se van a exportar, para revisarlos una última vez.</dd></div><div><dt><code>Export.table.toAsset({...})</code></dt><dd>No guarda nada todavía: crea una <b>tarea</b> en la pestaña Tasks. Hay que iniciarla a mano. El archivo se llamará <code class="i">puntos_E1</code>, <code class="i">puntos_E2</code> o <code class="i">puntos_E3</code>.</dd></div></dl></div></details>
+  <div class="box check"><b class="t">Qué deben ver en la consola</b>
+    <div class="out"><span class="tk-c">Puntos dibujados</span>                       48
+<span class="tk-c">Puntos dentro de la zona (...)</span>         48
+<span class="tk-c">Puntos por clase (0 suelo, 1 bosque, ...)</span>
+  0: 11   1: 13   2: 12   3: 12</div>
+    <p>Los números de arriba son un ejemplo. Los suyos deben ser parecidos en forma: los dos primeros iguales y las cuatro clases presentes.</p>
+  </div>
+  <details><summary>Si sale «fc.map is not a function» o «suelo is not defined»</summary><div><p>Una de las capas está como <i>Geometry</i> en lugar de <i>FeatureCollection</i>, o tiene otro nombre. Abran la rueda de configuración de la capa en el panel de dibujo y corrijan nombre y tipo. Los cuatro nombres son <code class="i">suelo</code>, <code class="i">bosque</code>, <code class="i">cultivos</code> y <code class="i">pastos</code>.</p></div></details>
+  <details><summary>Si «Puntos dentro de la zona» es menor que «Puntos dibujados»</summary><div><p>Hay puntos fuera del polígono. El código los descarta solo, pero conviene saber cuántos fueron. Si perdieron una clase casi completa, agreguen puntos dentro de la zona antes de exportar.</p></div></details>
+</section>
+
+<section class="step" id="p5">
+  <div class="step-head"><span class="eyebrow">Paso 5</span><h2>Iniciar la tarea y compartir</h2></div>
+  <p>Hasta aquí no se ha guardado nada. La exportación empieza cuando ustedes la inician.</p>
+  <ol>
+    <li>Abran la pestaña <b>Tasks</b>, arriba a la derecha. Debe aparecer <code class="i">puntos_E1</code> (o su letra) con un botón <b>Run</b>.</li>
+    <li>Presionen <b>Run</b>. En la ventana que abre, revisen que la ruta del asset sea la de su carpeta y confirmen.</li>
+    <li>Esperen a que la tarea termine. Suele tardar menos de un minuto.</li>
+    <li>En el panel <b>Assets</b>, actualicen y confirmen que el archivo aparece dentro de <code class="i">clasificacion_s2</code>.</li>
+    <li>Compartan el asset: pasen el cursor sobre él, abran <b>Share</b> y agreguen a sus compañeros de grupo como lectores. Sin ese permiso, el código de la próxima semana no puede leerlo.</li>
+    <li>Envíen la ruta completa del asset al grupo.</li>
+  </ol>
+  <div class="box warn"><b class="t">Tengan presente</b><p>El archivo guarda solo la ubicación, la clase y las etiquetas. Todavía no tiene valores de bandas. Eso lo agregamos en la parte 3.</p></div>
+</section>
+
+<hr>
+
+<section class="step" id="entrega">
+  <div class="step-head"><span class="eyebrow">Para cerrar</span><h2>Lista de entrega</h2></div>
+  <ul class="todo">
+    <li><label><input type="checkbox" id="chk-f"><span>El asset <code class="i">puntos_E…</code> existe en la carpeta del grupo.</span></label></li>
+    <li><label><input type="checkbox" id="chk-g"><span>Tiene las cuatro clases, con al menos 10 puntos cada una.</span></label></li>
+    <li><label><input type="checkbox" id="chk-h"><span>Está compartido con mis compañeros como lector.</span></label></li>
+    <li><label><input type="checkbox" id="chk-i"><span>Ya envié la ruta al grupo.</span></label></li>
+    <li><label><input type="checkbox" id="chk-j"><span>Anoté un lugar donde dudé de la clase.</span></label></li>
+  </ul>
+  <h3>Para discutir</h3>
+  <ol>
+    <li>¿Por qué conviene que los puntos los marquen tres personas distintas y no una sola?</li>
+    <li>¿Qué pasa si dos compañeros marcan el mismo píxel con clases distintas?</li>
+    <li>¿Por qué exportamos los puntos sin valores espectrales todavía?</li>
+    <li>Sus puntos los escogieron ustedes mirando el mapa. ¿Qué tan bien representan toda la zona?</li>
+  </ol>
+  <h3>Qué sigue</h3>
+  <p>En la parte 2 se unen los puntos de los tres, se descartan los repetidos y las celdas con etiquetas contradictorias, y se separan 80 % para entrenar y 20 % para validar. Los puntos que apartemos ahí no se tocan hasta evaluar el mapa.</p>
+</section>
+
+<footer>
+  <p>GF0662 Teledetección, Escuela de Geografía, UCR. Datos: Copernicus Sentinel-2 nivel 2A (<code class="i">COPERNICUS/S2_SR_HARMONIZED</code>). El flujo de trabajo adapta el esquema de clasificación supervisada de Ujaval Gandhi (Spatial Thoughts).</p>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function hl(code) {
+    return esc(code).replace(/(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|('(?:[^'\\\n]|\\.)*')|\b(var|function|return|true|false|null)\b|(\b\d+(?:\.\d+)?(?:e\d+)?\b)/g,
+      function (m, c, s, k, n) {
+        if (c) return '<span class="tk-c">' + m + '</span>';
+        if (s) return '<span class="tk-s">' + m + '</span>';
+        if (k) return '<span class="tk-k">' + m + '</span>';
+        return '<span class="tk-n">' + m + '</span>';
+      });
+  }
+  function copyText(text, btn, label) {
+    function ok() {
+      var old = btn.textContent;
+      btn.textContent = '¡Copiado!'; btn.classList.add('done');
+      setTimeout(function () { btn.textContent = label || old; btn.classList.remove('done'); }, 1600);
+    }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); ok(); } catch (e) { btn.textContent = 'Seleccionen y copien (Ctrl+C)'; }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(ok, fallback);
+    } else { fallback(); }
+  }
+  var all = [];
+  document.querySelectorAll('script.src').forEach(function (s) {
+    var code = s.textContent.replace(/^\n+/, '').replace(/\s+$/, '') + '\n';
+    all.push(code);
+    var cell = document.createElement('div'); cell.className = 'cell';
+    var bar = document.createElement('div'); bar.className = 'cell-bar';
+    var nm = document.createElement('span'); nm.textContent = s.getAttribute('data-name') || 'codigo.js';
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'copy'; b.textContent = 'Copiar';
+    b.addEventListener('click', function () { copyText(code, b, 'Copiar'); });
+    bar.appendChild(nm); bar.appendChild(b);
+    var pre = document.createElement('pre'); var c = document.createElement('code');
+    c.innerHTML = hl(code); pre.appendChild(c);
+    cell.appendChild(bar); cell.appendChild(pre);
+    s.parentNode.insertBefore(cell, s.nextSibling);
+  });
+  var ca = document.getElementById('copyAll');
+  ca.addEventListener('click', function () { copyText(all.join('\n'), ca, 'Copiar todo el código'); });
+  document.querySelectorAll('.todo input[type=checkbox]').forEach(function (cb) {
+    try { if (localStorage.getItem('gf0662p1-' + cb.id) === '1') cb.checked = true; } catch (e) {}
+    cb.addEventListener('change', function () {
+      try { localStorage.setItem('gf0662p1-' + cb.id, cb.checked ? '1' : '0'); } catch (e) {}
+    });
+  });
+})();
+</script>
+
+</body></html>
